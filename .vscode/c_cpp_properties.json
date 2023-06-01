@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "//home/calistabiondic/PHiLiP_ETC/Libraries/**"
+                "//home/calistabiondic/PHiLiP_ETC/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
