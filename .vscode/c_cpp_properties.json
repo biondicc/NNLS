@@ -4,7 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "//home/calistabiondic/PHiLiP_ETC/**"
+                "/usr/include/trilinos",
+                "/home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
