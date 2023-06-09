@@ -1,0 +1,23 @@
+#!/bin/bash
+# Edit path to where Trilinos is installed, if not a standard system prefix
+#  (CMAKE_INSTALL_PREFIX in Trilinos configure)
+#
+# The ".."  at the end is the relative path from the current build dir
+# to the top level CMakeLists.txt file. This needs to be changed if the
+# build dir is not a subdir of the main project.
+
+rm CMakeCache.txt
+
+cmake \
+ -D Trilinos_DIR:PATH=/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/lib/cmake/Trilinos \
+ -D Trilinos_PREFIX:PATH=/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/lib/cmake/Trilinos \
+ -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+ -D DEAL_II_DIR:PATH=/home/PHiLiP_ETC/Libraries/dealii \
+ -D Eigen3_DIR:PATH=/home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen/build_dir \
+ -D EIGEN3_INCLUDE_DIR:PATH=/home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen \
+..
+
+#  Other Cmake options can be added:
+#
+# -D CMAKE_CXX_FLAGS:STRING="-DENABLE_HACKS" \
+

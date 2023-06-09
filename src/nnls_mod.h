@@ -1,10 +1,9 @@
 
 #include <iostream>
-#include <Epetra_SerialComm.h>
-#include <Epetra_Map.h>
-#include <Epetra_CrsMatrix.h>
-#include <Epetra_Vector.h>
-#include "eigen-3.4.0/Eigen/Dense"
+#include <trilinos/Epetra_SerialComm.h>
+#include <trilinos/Epetra_Map.h>
+#include <trilinos/Epetra_CrsMatrix.h>
+#include <trilinos/Epetra_Vector.h>
 
 // template <class Epetra_CrsMatrix> class NNLS_mod{
 // public:
@@ -38,15 +37,20 @@
 //     const int _numCols;
     
 // };
-
 class NNLS_mod{
-    const Epetra_CrsMatrix A; 
-    unsigned int max_iter;
-    float eps;
-    public:
-        NNLS_mod (const Epetra_CrsMatrix, unsigned int, float);
+    Epetra_CrsMatrix _A;
+    unsigned int _max_iter;
+    float _epsilon;
+public:
+        NNLS_mod(const Epetra_CrsMatrix &A, unsigned int max_iter, float eps=1e-10);
         bool solve(const Epetra_Vector &b);
 };
+
+NNLS_mod::NNLS_mod(const Epetra_CrsMatrix &A, unsigned int max_iter, float eps=1e-10){
+    Epetra_CrsMatrix _A(A);
+    _max_iter = max_iter;
+    _epsilon = eps;
+}
 
 bool NNLS_mod::solve(const Epetra_Vector &b){
     unsigned int _num_ls = 0;

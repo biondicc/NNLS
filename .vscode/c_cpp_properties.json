@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/include/trilinos",
+                "/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include",
                 "/home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen"
             ],
             "defines": [],
