@@ -87,9 +87,18 @@ void AddIntoX(Epetra_Vector &temp, Epetra_Vector &x, std::vector<bool> &P, doubl
   }
 }
 
-void moveToActiveSet(int idx, int numInactive, Eigen::VectorXd index_set){
+void moveToActiveSet(int idx, int numInactive, Eigen::VectorXd index_set, std::vector<bool> &P, std::vector<bool> &Z){
   std::swap(index_set(idx), index_set(numInactive - 1));
-  numInactive--;
+
+  P[index_set(idx)] = 0;
+  Z[index_set(idx)] = 1; 
+}
+
+void moveToInactiveSet(int idx, int numInactive, Eigen::VectorXd index_set, std::vector<bool> &P, std::vector<bool> &Z){
+  std::swap(index_set(idx), index_set(numInactive));
+  
+  P[index_set(idx)] = 1;
+  Z[index_set(idx)] = 0;
 }
 
 bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_MpiComm &Comm, Epetra_Vector &b, Epetra_Vector &x, const int max_iter, const double tau){
@@ -118,6 +127,7 @@ bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_MpiComm &Comm, Epetra_Vector 
   Eigen::VectorXd grad_eig(gradient.GlobalLength());
   Epetra_Vector grad_col (A.ColMap());
   while(true){
+    // std::cout << numInactive << std::endl;
     if (A.NumGlobalCols() == numInactive){
       return true;
     }
@@ -125,6 +135,7 @@ bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_MpiComm &Comm, Epetra_Vector 
     // std::cout << AtAx << std::endl;
     gradient = Atb;
     gradient.Update(-1.0, AtAx, 1.0);
+    // std::cout << gradient << std::endl;
 
     grad_col = *gradient(0);
     for(int i = 0; i < gradient.GlobalLength() ; ++i){
@@ -133,9 +144,9 @@ bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_MpiComm &Comm, Epetra_Vector 
     
     const int numActive = A.NumGlobalCols() - numInactive;
     int argmaxGradient = -1;
-    grad_eig.maxCoeff(&argmaxGradient);
+    grad_eig(index_set.tail(numActive)).maxCoeff(&argmaxGradient);
     argmaxGradient += numInactive;
-    
+
     // ADD CHECK FOR RESIDUAL VALUE
     residual = b;
     A.Multiply(false, x, Ax);
@@ -149,24 +160,15 @@ bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_MpiComm &Comm, Epetra_Vector 
     if ((normRes[0]) <= (tau * normb[0])){
       return true;
     }
-
-    std::cout << index_set << std::endl;
-    std::swap(index_set(argmaxGradient), index_set(numInactive));
-    std::cout << index_set << std::endl;
+    
+    moveToInactiveSet(argmaxGradient, numInactive, index_set, P, Z);
     numInactive++;
-
-
-    Epetra_Vector z(A.ColMap());
-  
-    P[argmaxGradient] = 1;
-    Z[argmaxGradient] = 0;
-
     Epetra_Map Map(A.NumGlobalRows(),0,Comm);
     Epetra_Map ColMap(numInactive,0,Comm);
     Epetra_CrsMatrix P_mat(Epetra_DataAccess::Copy, Map, numInactive);
     PositiveSetMatrix(P,  P_mat, A);
     P_mat.FillComplete(ColMap, Map);
-    std::cout << P_mat << std::endl;
+    // std::cout << P_mat << std::endl;
 
     // Epetra_CrsMatrix P_mat(Epetra_DataAccess::Copy, A.ColMap(), A.NumMyCols());
     // Epetra_PermutationMatrix(P, P_mat);
@@ -189,9 +191,10 @@ bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_MpiComm &Comm, Epetra_Vector 
 
       solver.SetAztecOption(AZ_conv, AZ_rhs);
       solver.SetAztecOption( AZ_precond, AZ_Jacobi);
+      solver.SetAztecOption(AZ_output, AZ_none);
       solver.Iterate(100, 1.0E-5);
 
-      std::cout << temp << std::endl;
+      // std::cout << temp << std::endl;
       iter++;
       bool feasible = true;
       double alpha = Eigen::NumTraits<Eigen::VectorXd::Scalar>::highest();
@@ -211,15 +214,21 @@ bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_MpiComm &Comm, Epetra_Vector 
 
       if (feasible){
         SubIntoX(temp, x, P);
-        std::cout << x << std::endl;
+        // std::cout << x << std::endl;
         break;
       }
 
       AddIntoX(temp, x, P, alpha);
-      moveToActiveSet(infeasibleIdx, numInactive, index_set);
+      moveToActiveSet(infeasibleIdx, numInactive, index_set, P, Z);
+      numInactive--;
+
+      Epetra_Map Map(A.NumGlobalRows(),0,Comm);
+      Epetra_Map ColMap(numInactive,0,Comm);
+      Epetra_CrsMatrix P_mat(Epetra_DataAccess::Copy, Map, numInactive);
+      PositiveSetMatrix(P,  P_mat, A);
+      P_mat.FillComplete(ColMap, Map);
     }
     
-    return true;
   }
 }
 
@@ -229,7 +238,7 @@ int main(int argc, char *argv[]) {
 
   const int max_iter = 200;
 
-  // Known Test Case
+  // Test 1
   Matrix<double, 4, 2> A_eig(4, 2);
   Matrix<double, 2, 1> x_eig(2);
   A_eig << 1, 1, 2, 4, 3, 9, 4, 16;
@@ -258,26 +267,6 @@ int main(int argc, char *argv[]) {
   A.FillComplete(ColMap, Map);
   std::cout << A << std::endl;
   
-/* 
-  int NumMyElements = 100;
-  // Construct a Map that puts same number of equations on each processor
-  Epetra_Map Map(-1, NumMyElements, 0, Comm);
-  int NumGlobalElements = Map.NumGlobalElements();
-
-  Epetra_CrsMatrix A(Copy, Map, 3);
-
-  double negOne = -1.0;
-  double posTwo = 2.0;
-  for (int i=0; i<NumMyElements; i++) {
-    int GlobalRow = A.GRID(i); int RowLess1 = GlobalRow - 1; int RowPlus1 = GlobalRow + 1;
-    if (RowLess1!=-1) A.InsertGlobalValues(GlobalRow, 1, &negOne, &RowLess1);
-    if (RowPlus1!=NumGlobalElements) A.InsertGlobalValues(GlobalRow, 1, &negOne, &RowPlus1);
-    A.InsertGlobalValues(GlobalRow, 1, &posTwo, &GlobalRow);
-    }
-
-  A.FillComplete();
-  std::cout << A;
- */
   Epetra_Vector x(A.ColMap());
   Epetra_Vector b(Copy, A.RowMap(), b_eig);
   std::cout << b;
@@ -296,6 +285,38 @@ int main(int argc, char *argv[]) {
   
   Epetra_Vector x_new(A.ColMap());
   NNLS_solver(A, Comm, b, x_new, max_iter, 1.0E-8);
+  std::cout << x_new << std::endl;
+
+  // Test 2
+  Matrix<double, 4, 3> A2_eig(4, 3);
+  Matrix<double, 3, 1> x2_eig(3);
+  A2_eig << 1, 1, 1, 2, 4, 8, 3, 9, 27, 4, 16, 64;
+  double b2_eig[] = {0.73, 3.24, 8.31, 16.72};
+  x2_eig << 0.1, 0.5, 0.13;
+  int b2_ind[] = {0, 1, 2, 3};
+
+  Epetra_Map Map2(4,0,Comm);
+  Epetra_Map ColMap2(3,0,Comm);
+  Epetra_CrsMatrix A2(Epetra_DataAccess::Copy, Map2, 3);
+  const int numMyElements2 = Map2.NumGlobalElements();
+
+  for (int localRow = 0; localRow < numMyElements2; ++localRow){
+      const int globalRow = Map2.GID(localRow);
+      for(int n = 0 ; n < A2_eig.cols() ; n++){
+          A2.InsertGlobalValues(globalRow, 1, &A2_eig(globalRow, n), &n);
+      }
+  }
+
+  A2.FillComplete(ColMap2, Map2);
+  std::cout << A2 << std::endl;
+  
+  Epetra_Vector x2(A2.ColMap());
+  Epetra_Vector b2(Copy, A2.RowMap(), b2_eig);
+  std::cout << b2;
+
+  NNLS_solver(A2, Comm, b2, x2, max_iter, 1.0E-8);
+  std::cout << x2;
+
   #ifdef HAVE_MPI
   MPI_Finalize();
   #endif
