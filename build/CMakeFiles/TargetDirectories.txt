@@ -4,7 +4,8 @@
 /home/calistabiondic/Documents/Prep Work/NNLS/build/src/CMakeFiles/rebuild_cache.dir
 /home/calistabiondic/Documents/Prep Work/NNLS/build/src/CMakeFiles/edit_cache.dir
 /home/calistabiondic/Documents/Prep Work/NNLS/build/src/CMakeFiles/test.dir
-/home/calistabiondic/Documents/Prep Work/NNLS/build/src/CMakeFiles/MyApp.exe.dir
+/home/calistabiondic/Documents/Prep Work/NNLS/build/src/CMakeFiles/MyApp.dir
 /home/calistabiondic/Documents/Prep Work/NNLS/build/test/CMakeFiles/rebuild_cache.dir
 /home/calistabiondic/Documents/Prep Work/NNLS/build/test/CMakeFiles/edit_cache.dir
 /home/calistabiondic/Documents/Prep Work/NNLS/build/test/CMakeFiles/test.dir
+/home/calistabiondic/Documents/Prep Work/NNLS/build/test/CMakeFiles/Tests.exe.dir

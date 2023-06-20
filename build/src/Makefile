@@ -125,46 +125,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-src/CMakeFiles/MyApp.exe.dir/rule:
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/MyApp.exe.dir/rule
-.PHONY : src/CMakeFiles/MyApp.exe.dir/rule
+src/CMakeFiles/MyApp.dir/rule:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/MyApp.dir/rule
+.PHONY : src/CMakeFiles/MyApp.dir/rule
 
 # Convenience name for target.
-MyApp.exe: src/CMakeFiles/MyApp.exe.dir/rule
+MyApp: src/CMakeFiles/MyApp.dir/rule
 
-.PHONY : MyApp.exe
+.PHONY : MyApp
 
 # fast build rule for target.
-MyApp.exe/fast:
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f src/CMakeFiles/MyApp.exe.dir/build.make src/CMakeFiles/MyApp.exe.dir/build
-.PHONY : MyApp.exe/fast
-
-main_file.o: main_file.cpp.o
-
-.PHONY : main_file.o
-
-# target to build an object file
-main_file.cpp.o:
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f src/CMakeFiles/MyApp.exe.dir/build.make src/CMakeFiles/MyApp.exe.dir/main_file.cpp.o
-.PHONY : main_file.cpp.o
-
-main_file.i: main_file.cpp.i
-
-.PHONY : main_file.i
-
-# target to preprocess a source file
-main_file.cpp.i:
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f src/CMakeFiles/MyApp.exe.dir/build.make src/CMakeFiles/MyApp.exe.dir/main_file.cpp.i
-.PHONY : main_file.cpp.i
-
-main_file.s: main_file.cpp.s
-
-.PHONY : main_file.s
-
-# target to generate assembly for a file
-main_file.cpp.s:
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f src/CMakeFiles/MyApp.exe.dir/build.make src/CMakeFiles/MyApp.exe.dir/main_file.cpp.s
-.PHONY : main_file.cpp.s
+MyApp/fast:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f src/CMakeFiles/MyApp.dir/build.make src/CMakeFiles/MyApp.dir/build
+.PHONY : MyApp/fast
 
 # Help Target
 help:
@@ -175,10 +148,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... test"
-	@echo "... MyApp.exe"
-	@echo "... main_file.o"
-	@echo "... main_file.i"
-	@echo "... main_file.s"
+	@echo "... MyApp"
 .PHONY : help
 
 

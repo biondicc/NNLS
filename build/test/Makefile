@@ -124,6 +124,48 @@ depend:
 	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
+# Convenience name for target.
+test/CMakeFiles/Tests.exe.dir/rule:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/Tests.exe.dir/rule
+.PHONY : test/CMakeFiles/Tests.exe.dir/rule
+
+# Convenience name for target.
+Tests.exe: test/CMakeFiles/Tests.exe.dir/rule
+
+.PHONY : Tests.exe
+
+# fast build rule for target.
+Tests.exe/fast:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/build
+.PHONY : Tests.exe/fast
+
+known_test_cases.o: known_test_cases.cpp.o
+
+.PHONY : known_test_cases.o
+
+# target to build an object file
+known_test_cases.cpp.o:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.o
+.PHONY : known_test_cases.cpp.o
+
+known_test_cases.i: known_test_cases.cpp.i
+
+.PHONY : known_test_cases.i
+
+# target to preprocess a source file
+known_test_cases.cpp.i:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.i
+.PHONY : known_test_cases.cpp.i
+
+known_test_cases.s: known_test_cases.cpp.s
+
+.PHONY : known_test_cases.s
+
+# target to generate assembly for a file
+known_test_cases.cpp.s:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.s
+.PHONY : known_test_cases.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -133,6 +175,10 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... test"
+	@echo "... Tests.exe"
+	@echo "... known_test_cases.o"
+	@echo "... known_test_cases.i"
+	@echo "... known_test_cases.s"
 .PHONY : help
 
 

@@ -125,17 +125,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named MyApp.exe
+# Target rules for targets named MyApp
 
 # Build rule for target.
-MyApp.exe: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 MyApp.exe
-.PHONY : MyApp.exe
+MyApp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 MyApp
+.PHONY : MyApp
 
 # fast build rule for target.
-MyApp.exe/fast:
-	$(MAKE) -f src/CMakeFiles/MyApp.exe.dir/build.make src/CMakeFiles/MyApp.exe.dir/build
-.PHONY : MyApp.exe/fast
+MyApp/fast:
+	$(MAKE) -f src/CMakeFiles/MyApp.dir/build.make src/CMakeFiles/MyApp.dir/build
+.PHONY : MyApp/fast
+
+#=============================================================================
+# Target rules for targets named Tests.exe
+
+# Build rule for target.
+Tests.exe: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Tests.exe
+.PHONY : Tests.exe
+
+# fast build rule for target.
+Tests.exe/fast:
+	$(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/build
+.PHONY : Tests.exe/fast
 
 # Help Target
 help:
@@ -146,7 +159,8 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... test"
-	@echo "... MyApp.exe"
+	@echo "... MyApp"
+	@echo "... Tests.exe"
 .PHONY : help
 
 
