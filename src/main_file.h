@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-//#include "nnls_mod.h"
 #include <AztecOO_config.h>
 #ifdef HAVE_MPI
 #include <mpi.h>
@@ -23,6 +22,8 @@
 using Eigen::Matrix;
 
 void Epetra_PermutationMatrix(std::vector<bool> &P, Epetra_CrsMatrix &P_mat){
+  // Fill diagonal matrix with ones in the positive set
+  // No longer in use
   double posOne = 1.0;
   for(int i = 0; i < P_mat.NumMyCols(); i++){
     int GlobalRow = P_mat.GRID(i);
@@ -33,6 +34,7 @@ void Epetra_PermutationMatrix(std::vector<bool> &P, Epetra_CrsMatrix &P_mat){
 }
 
 void PositiveSetMatrix(std::vector<bool> &P,  Epetra_CrsMatrix &P_mat, const Epetra_CrsMatrix &A, Eigen::VectorXd &index_set){
+  // Create matrix P_mat which contains the positive set of columns in A
   int colMap[A.NumGlobalCols()];
   int numCol = 0;
   for(int j = 0; j < A.NumGlobalCols(); j++){
@@ -57,6 +59,7 @@ void PositiveSetMatrix(std::vector<bool> &P,  Epetra_CrsMatrix &P_mat, const Epe
 }
 
 void SubIntoX(Epetra_Vector &temp, Epetra_Vector &x, std::vector<bool> &P,  Eigen::VectorXd &index_set){
+  // Substitute new values into the solution vector
   int colMap[x.GlobalLength()];
   int numCol = 0;
   for(int j = 0; j < x.GlobalLength(); j++){
@@ -74,6 +77,7 @@ void SubIntoX(Epetra_Vector &temp, Epetra_Vector &x, std::vector<bool> &P,  Eige
 }
 
 void AddIntoX(Epetra_Vector &temp, Epetra_Vector &x, std::vector<bool> &P, double alpha,  Eigen::VectorXd &index_set){
+  // Add vector temp time scalar alpha into the vector x
   int colMap[x.GlobalLength()];
   int numCol = 0;
   for(int j = 0; j < x.GlobalLength(); j++){
@@ -91,6 +95,7 @@ void AddIntoX(Epetra_Vector &temp, Epetra_Vector &x, std::vector<bool> &P, doubl
 }
 
 void moveToActiveSet(int idx, int numInactive, Eigen::VectorXd &index_set, std::vector<bool> &P, std::vector<bool> &Z){
+  // Move index at idx into the Active Set (Z set)
   P[index_set(idx)] = 0;
   Z[index_set(idx)] = 1; 
 
@@ -98,17 +103,18 @@ void moveToActiveSet(int idx, int numInactive, Eigen::VectorXd &index_set, std::
 }
 
 void moveToInactiveSet(int idx, int numInactive, Eigen::VectorXd &index_set, std::vector<bool> &P, std::vector<bool> &Z){
+  // Move index at idx into the Inactive Set (P set)
   P[index_set(idx)] = 1;
   Z[index_set(idx)] = 0;
 
   std::swap(index_set(idx), index_set(numInactive));
 }
 
-bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_Comm &Comm, Epetra_Vector &b, Epetra_Vector &x, const int max_iter, const double tau){
+bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_Comm &Comm, Epetra_Vector &b, Epetra_Vector &x, const int max_iter, const double tau, int LS_iter = 1000, double LS_tol = 10E-8){
   int iter = 0;
   bool solve = true;
   Eigen::VectorXd index_set;
-  index_set = Eigen::VectorXd::LinSpaced(A.NumMyCols(), 0, A.NumMyCols() -1);
+  index_set = Eigen::VectorXd::LinSpaced(A.NumMyCols(), 0, A.NumMyCols() -1); // Indices proceeding and including numInactive are in the P set (Inactive/Positive)
   int numInactive = 0;
   std::vector<bool> Z(A.NumMyCols());
   Z.flip();
@@ -129,11 +135,14 @@ bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_Comm &Comm, Epetra_Vector &b,
 
   Eigen::VectorXd grad_eig(gradient.GlobalLength());
   Epetra_Vector grad_col (A.ColMap());
+
+  // OUTER LOOP
   while(true){
-    // std::cout << numInactive << std::endl;
+    // Early exit if all variables are inactive, which breaks 'maxCoeff' below.
     if (A.NumGlobalCols() == numInactive){
       return true;
     }
+
     AtA.Multiply(false, x, AtAx);
     // std::cout << AtAx << std::endl;
     gradient = Atb;
@@ -145,12 +154,14 @@ bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_Comm &Comm, Epetra_Vector &b,
       grad_eig[i] = grad_col[i];
     }
     
+    // Find the maximum element of the gradient in the active set.
+    // Move that variable to the inactive set.
+
     const int numActive = A.NumGlobalCols() - numInactive;
     int argmaxGradient = -1;
     grad_eig(index_set.tail(numActive)).maxCoeff(&argmaxGradient);
     argmaxGradient += numInactive;
 
-    // ADD CHECK FOR RESIDUAL VALUE
     residual = b;
     A.Multiply(false, x, Ax);
     residual.Update(-1.0, Ax, 1.0);
@@ -160,46 +171,52 @@ bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_Comm &Comm, Epetra_Vector &b,
 
     double normb[1];
     b.Norm2(normb);
+    // Exit Condition on the residual based on the norm of b
     if ((normRes[0]) <= (tau * normb[0])){
       return true;
     }
     
-    
     moveToInactiveSet(argmaxGradient, numInactive, index_set, P, Z);
     // std::cout <<"index" << index_set << std::endl;
     numInactive++;
-    std::cout << A.NumGlobalRows() << index_set << std::endl;
-    
-    std::cout << "map made";
+
+    // INNER LOOP
     while(true){
+      // Check if max. number of iterations is reached
       if (iter >= max_iter){
         return false;
       }
+
+      // Create matrix P_mat with columns from set P
       Epetra_Map Map(A.NumGlobalRows(),0,Comm);
       Epetra_Map ColMap(numInactive,0,Comm);
       Epetra_CrsMatrix P_mat(Epetra_DataAccess::Copy, Map, numInactive);
       PositiveSetMatrix(P,  P_mat, A, index_set);
       P_mat.FillComplete(ColMap, Map);
-      std::cout << P_mat << std::endl;
+      // std::cout << P_mat << std::endl;
+
+      // Create temporary solution vector temp which is only the length of numInactive
       Epetra_Vector temp(P_mat.ColMap());
+
+      // Solve least-squares problem in inactive set only with Aztec00
       Epetra_LinearProblem problem(&P_mat, &temp, &b);
-      // Create AztecOO instance
       AztecOO solver(problem);
 
       solver.SetAztecOption(AZ_conv, AZ_rhs);
       solver.SetAztecOption( AZ_precond, AZ_Jacobi);
       solver.SetAztecOption(AZ_output, AZ_none);
-      solver.Iterate(1000, 1.0E-8);
-
+      solver.Iterate(LS_iter, LS_tol);
       // std::cout << "temp: " << temp << std::endl;
-      iter++;
+      iter++; // The solve is expensive, so that is what we count as an iteration.
+      
+      // Check feasability...
       bool feasible = true;
       double alpha = Eigen::NumTraits<Eigen::VectorXd::Scalar>::highest();
-      
       int infeasibleIdx = -1;
       for(int k = 0; k < numInactive; k++){
         int idx = index_set[k];
         if (temp[k] < 0){
+          // t should always be in [0,1]
           // std::cout << "temp[k]: " << temp[k] << std::endl;
           double t = -x[idx]/(temp[k] - x[idx]);
           // std::cout << "t: " << t << std::endl; 
@@ -213,105 +230,21 @@ bool NNLS_solver(const Epetra_CrsMatrix &A, Epetra_Comm &Comm, Epetra_Vector &b,
       }
       eigen_assert(feasible || 0 <= infeasibleIdx);
 
+      // If solution is feasible, exit to outer loo
       if (feasible){
         SubIntoX(temp, x, P, index_set);
         // std::cout << "sub temp: " << x << std::endl;
         break;
       }
 
+      // Infeasible solution -> interpolate to feasible one
       AddIntoX(temp, x, P, alpha, index_set);
       // std::cout << "added with alpha: " << x << std::endl;
+
+      // Remove these indices from the inactive set
       moveToActiveSet(infeasibleIdx, numInactive, index_set, P, Z);
       numInactive--;
     }
     
   }
 }
-
-// int main(int argc, char *argv[]) {
-//   using std::tuple;
-//   int status = 0;
-
-//   #ifdef HAVE_MPI
-//   MPI_Init(&argc,&argv);
-//   Epetra_MpiComm Comm( MPI_COMM_WORLD );
-//   #else
-//   Epetra_SerialComm Comm;
-//   #endif
-
-//   const int max_iter = 3;
-
-//   // Test 1
-//   Eigen::MatrixXd A_eig(4, 2);
-//   Eigen::MatrixXd x_eig(2,1);
-//   A_eig << 1, 1, 2, 4, 3, 9, 4, 16;
-//   double b_eig[] = {0.6, 2.2, 4.8, 8.4};
-//   int b_ind[] = {0, 1, 2, 3};
-//   x_eig << 0.1, 0.5;
-
-//   std::cout << " Test 1 "<< std::endl;
-//   test_nnls_known(A_eig, 2, 4, x_eig, b_eig, Comm);
-
-//  /*  // Create Linear Problem
-//   Epetra_LinearProblem problem(&A, &x, &b);
-//   // Create AztecOO instance
-//   AztecOO solver(problem);
-
-//   solver.SetAztecOption(AZ_precond, AZ_Jacobi);
-//   solver.Iterate(100, 1.0E-8);
-
-//   std::cout << "Solver performed " << solver.NumIters() << " iterations." << std::endl
-//        << "Norm of true residual = " << solver.TrueResidual() << std::endl
-//        << x;
-  
-//   Epetra_Vector x_new(A.ColMap());
-//   NNLS_solver(A, Comm, b, x_new, max_iter, 1.0E-8);
-//   std::cout << x_new << std::endl;
-//  */
-//   // Test 2
-//   Eigen::MatrixXd A2_eig(4, 3);
-//   Eigen::MatrixXd x2_eig(3, 1);
-//   A2_eig << 1, 1, 1, 2, 4, 8, 3, 9, 27, 4, 16, 64;
-//   double b2_eig[] = {0.73, 3.24, 8.31, 16.72};
-//   x2_eig << 0.1, 0.5, 0.13;
-
-//   std::cout << " Test  "<< std::endl;
-//   test_nnls_known(A2_eig, 3, 4, x2_eig, b2_eig, Comm);
-  
-//   // Test 3
-//   Eigen::MatrixXd A3_eig(4, 4);
-//   Eigen::MatrixXd x3_eig(4, 1);
-//   A3_eig << 1, 1, 1, 1, 2, 4, 8, 16, 3, 9, 27, 81, 4, 16, 64, 256;
-//   double b3_eig[] = {0.73, 3.24, 8.31, 16.72};
-//   x3_eig << 0.1, 0.5, 0.13, 0;
-
-//   std::cout << " Test 3 "<< std::endl;
-//   test_nnls_known(A3_eig, 4, 4, x3_eig, b3_eig, Comm);
-  
-//   // Test 4
-//   Eigen::MatrixXd A4_eig(4, 3);
-//   Eigen::MatrixXd x4_eig(3, 1);
-//   A4_eig << 1, 1, 1, 2, 4, 8, 3, 9, 27, 4, 16, 64;
-//   double b4_eig[] = {0.23, 1.24, 3.81, 8.72};
-//   x4_eig << 0.1, 0, 0.13;
-
-//   std::cout << " Test 4 "<< std::endl;
-//   test_nnls_known(A4_eig, 3, 4, x4_eig, b4_eig, Comm);
-  
-
-//   // Test 5
-//   Eigen::MatrixXd A5_eig(4, 3);
-//   Eigen::MatrixXd x5_eig(3, 1);
-//   A5_eig << 1, 1, 1, 2, 4, 8, 3, 9, 27, 4, 16, 64;
-//   double b5_eig[] = {0.13, 0.84, 2.91, 7.12};
-//   // Solution obtained by original nnls() implementation in Fortran
-//   x5_eig << 0.0, 0.0, 0.1106544;
-
-//   std::cout << " Test 5 "<< std::endl;
-//   test_nnls_known(A5_eig, 3, 4, x5_eig, b5_eig, Comm);
-
-//   #ifdef HAVE_MPI
-//   MPI_Finalize();
-//   #endif
-//   return status;
-// }

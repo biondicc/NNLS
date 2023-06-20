@@ -1,7 +1,6 @@
 #include "../src/main_file.h"
 #include <iostream>
 #include <string>
-//#include "nnls_mod.h"
 #include <AztecOO_config.h>
 #ifdef HAVE_MPI
 #include <mpi.h>
@@ -24,13 +23,9 @@
 bool verify_nnls_optimality(Eigen::MatrixXd &A, Eigen::MatrixXd &b_eig, Eigen::MatrixXd &x, double tau) {
   // The NNLS optimality conditions are:
   //
-  // * 0 = A'*A*x - A'*b - lambda
   // * 0 <= x[i] \forall i
-  // * 0 <= lambda[i] \forall i
-  // * 0 = x[i]*lambda[i] \forall i
-  //
-  // we don't know lambda, but by assuming the first optimality condition is true,
-  // we can derive it and then check the others conditions.
+  // * ||residual||_2 <= tau * ||b||_2 \forall i
+
   Eigen::MatrixXd res = (A * x - b_eig);
   bool opt = true;
   // NNLS solutions are EXACTLY not negative.
@@ -43,21 +38,16 @@ bool verify_nnls_optimality(Eigen::MatrixXd &A, Eigen::MatrixXd &b_eig, Eigen::M
   return opt;
 }
 
-// void test_nnls_known_solution(const MatrixType &A, const VectorB &b, const VectorX &x_expected) {
-//   const VectorX x = nnls.solve(b);
-
-//   VERIFY_IS_EQUAL(nnls.info(), ComputationInfo::Success);
-//   VERIFY_IS_APPROX(x, x_expected);
-//   verify_nnls_optimality(A, b, x, tolerance);
-// }
-
 void epetra_to_eig(int col, Epetra_Vector &x, Eigen::MatrixXd &x_eig){
+  // Comvert epetra vector to eigen vector
   for(int i = 0; i < col; i++){
-    x_eig(i,1) = x[i];
+    x_eig(i,0) = x[i];
   }
 }
 
 bool test_nnls_known(Eigen::MatrixXd &A_eig, int col, int row, Eigen::MatrixXd &x_eig, Eigen::MatrixXd &b_eig, double *b_pt, Epetra_Comm &Comm, const double tau, const int max_iter){
+  // Check solution of NNLS problem with a known solution
+  // Returns true if the solver exits for any condition other than max_iter and if the solution x accurate to the true solution and satisfies the conditions above
   Epetra_Map RowMap(row,0,Comm);
   Epetra_Map ColMap(col,0,Comm);
   Epetra_CrsMatrix A(Epetra_DataAccess::Copy, RowMap, col);
@@ -90,8 +80,9 @@ bool test_nnls_known(Eigen::MatrixXd &A_eig, int col, int row, Eigen::MatrixXd &
 
   Eigen::MatrixXd x_nnls_eig(col,1);
   epetra_to_eig(col, x, x_nnls_eig);
-  bool opt = verify_nnls_optimality(A_eig, b_eig, x_eig, tau);
-  std::cout << opt << std::endl;
+  bool opt = verify_nnls_optimality(A_eig, b_eig, x_nnls_eig, tau);
+  opt&= x_nnls_eig.isApprox(x_eig, tau);
+  // std::cout << opt << std::endl;
   return opt;
 }
 
@@ -136,6 +127,32 @@ bool case_3 (Epetra_Comm &Comm, const double tau, const int max_iter) {
   return test_nnls_known(A_eig, 4, 4, x_eig, b_eig, b_pt, Comm, tau, max_iter);
 }
 
+bool case_4 (Epetra_Comm &Comm, const double tau, const int max_iter) {
+  Eigen::MatrixXd A_eig(4,3);
+  Eigen::MatrixXd b_eig(4,1);
+  Eigen::MatrixXd x_eig(3,1);
+
+  A_eig << 1, 1, 1, 2, 4, 8, 3, 9, 27, 4, 16, 64;
+  b_eig << 0.23, 1.24, 3.81, 8.72;
+  x_eig << 0.1, 0, 0.13;
+  double b_pt[] = {0.23, 1.24, 3.81, 8.72};
+
+  return test_nnls_known(A_eig, 3, 4, x_eig, b_eig, b_pt, Comm, tau, max_iter);
+}
+
+bool case_5 (Epetra_Comm &Comm, const double tau, const int max_iter) {
+  Eigen::MatrixXd A_eig(4,3);
+  Eigen::MatrixXd b_eig(4,1);
+  Eigen::MatrixXd x_eig(3,1);
+
+  A_eig << 1, 1, 1, 2, 4, 8, 3, 9, 27, 4, 16, 64;
+  b_eig << 0.13, 0.84, 2.91, 7.12;
+  x_eig << 0.0, 0.0, 0.1106544;
+  double b_pt[] = {0.13, 0.84, 2.91, 7.12};
+
+  return test_nnls_known(A_eig, 3, 4, x_eig, b_eig, b_pt, Comm, tau, max_iter);
+}
+
 int main(int argc, char *argv[]){
   #ifdef HAVE_MPI
   MPI_Init(&argc,&argv);
@@ -144,13 +161,15 @@ int main(int argc, char *argv[]){
   Epetra_SerialComm Comm;
   #endif
   const double tau = 1E-8;
-  const int max_iter = 100;
+  const int max_iter = 1000;
 
   std::cout << " Test 1 "<< std::endl;
   bool ok = true;
-  //ok &= case_1(Comm, tau, max_iter);
-  ok &= case_2(Comm, tau, max_iter);
+  ok &= case_1(Comm, tau, max_iter);
+  //ok &= case_2(Comm, tau, max_iter);
   //ok &= case_3(Comm, tau, max_iter);
+  //ok &= case_4(Comm, tau, max_iter);
+  //ok &= case_5(Comm, tau, max_iter);
   #ifdef HAVE_MPI
   MPI_Finalize();
   #endif
