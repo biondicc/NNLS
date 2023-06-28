@@ -5,6 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include",
+                "/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/packages",
                 "/home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen"
             ],
             "defines": [],

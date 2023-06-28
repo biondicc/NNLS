@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/calistabiondic/Documents/Prep Work/NNLS/src/main_file.h
+../src/main_file.h
 iostream
 -
 string
@@ -39,8 +39,8 @@ Eigen/Dense
 -
 
 /home/calistabiondic/Documents/Prep Work/NNLS/test/known_test_cases.cpp
-../src/main_file.h
-/home/calistabiondic/Documents/Prep Work/NNLS/src/main_file.h
+main_file.h
+/home/calistabiondic/Documents/Prep Work/NNLS/test/main_file.h
 iostream
 -
 string

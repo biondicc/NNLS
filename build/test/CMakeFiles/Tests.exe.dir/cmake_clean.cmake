@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.o"
   "CMakeFiles/Tests.exe.dir/known_test_cases.cpp.o"
   "Tests.exe"
   "Tests.exe.pdb"

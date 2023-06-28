@@ -60,27 +60,27 @@ include src/CMakeFiles/myappLib.dir/progress.make
 # Include the compile flags for this target's objects.
 include src/CMakeFiles/myappLib.dir/flags.make
 
-src/CMakeFiles/myappLib.dir/src_file.cpp.o: src/CMakeFiles/myappLib.dir/flags.make
-src/CMakeFiles/myappLib.dir/src_file.cpp.o: ../src/src_file.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/calistabiondic/Documents/Prep Work/NNLS/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/myappLib.dir/src_file.cpp.o"
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/src" && /usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myappLib.dir/src_file.cpp.o -c "/home/calistabiondic/Documents/Prep Work/NNLS/src/src_file.cpp"
+src/CMakeFiles/myappLib.dir/main_file.cpp.o: src/CMakeFiles/myappLib.dir/flags.make
+src/CMakeFiles/myappLib.dir/main_file.cpp.o: ../src/main_file.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/calistabiondic/Documents/Prep Work/NNLS/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/myappLib.dir/main_file.cpp.o"
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/src" && /usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/myappLib.dir/main_file.cpp.o -c "/home/calistabiondic/Documents/Prep Work/NNLS/src/main_file.cpp"
 
-src/CMakeFiles/myappLib.dir/src_file.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myappLib.dir/src_file.cpp.i"
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/src" && /usr/bin/mpicxx $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/calistabiondic/Documents/Prep Work/NNLS/src/src_file.cpp" > CMakeFiles/myappLib.dir/src_file.cpp.i
+src/CMakeFiles/myappLib.dir/main_file.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/myappLib.dir/main_file.cpp.i"
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/src" && /usr/bin/mpicxx $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/calistabiondic/Documents/Prep Work/NNLS/src/main_file.cpp" > CMakeFiles/myappLib.dir/main_file.cpp.i
 
-src/CMakeFiles/myappLib.dir/src_file.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myappLib.dir/src_file.cpp.s"
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/src" && /usr/bin/mpicxx $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/calistabiondic/Documents/Prep Work/NNLS/src/src_file.cpp" -o CMakeFiles/myappLib.dir/src_file.cpp.s
+src/CMakeFiles/myappLib.dir/main_file.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/myappLib.dir/main_file.cpp.s"
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/src" && /usr/bin/mpicxx $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/calistabiondic/Documents/Prep Work/NNLS/src/main_file.cpp" -o CMakeFiles/myappLib.dir/main_file.cpp.s
 
 # Object files for target myappLib
 myappLib_OBJECTS = \
-"CMakeFiles/myappLib.dir/src_file.cpp.o"
+"CMakeFiles/myappLib.dir/main_file.cpp.o"
 
 # External object files for target myappLib
 myappLib_EXTERNAL_OBJECTS =
 
-src/libmyappLib.a: src/CMakeFiles/myappLib.dir/src_file.cpp.o
+src/libmyappLib.a: src/CMakeFiles/myappLib.dir/main_file.cpp.o
 src/libmyappLib.a: src/CMakeFiles/myappLib.dir/build.make
 src/libmyappLib.a: src/CMakeFiles/myappLib.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/calistabiondic/Documents/Prep Work/NNLS/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libmyappLib.a"

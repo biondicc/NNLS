@@ -143,12 +143,12 @@ src/CMakeFiles/MyApp.dir/clean:
 test/CMakeFiles/Tests.exe.dir/all:
 	$(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/depend
 	$(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/home/calistabiondic/Documents/Prep Work/NNLS/build/CMakeFiles" --progress-num=1,2 "Built target Tests.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/home/calistabiondic/Documents/Prep Work/NNLS/build/CMakeFiles" --progress-num=1,2,3 "Built target Tests.exe"
 .PHONY : test/CMakeFiles/Tests.exe.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/Tests.exe.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/calistabiondic/Documents/Prep Work/NNLS/build/CMakeFiles" 2
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/calistabiondic/Documents/Prep Work/NNLS/build/CMakeFiles" 3
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/Tests.exe.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/home/calistabiondic/Documents/Prep Work/NNLS/build/CMakeFiles" 0
 .PHONY : test/CMakeFiles/Tests.exe.dir/rule

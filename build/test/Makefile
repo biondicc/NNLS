@@ -139,6 +139,33 @@ Tests.exe/fast:
 	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/build
 .PHONY : Tests.exe/fast
 
+__/src/main_file.o: __/src/main_file.cpp.o
+
+.PHONY : __/src/main_file.o
+
+# target to build an object file
+__/src/main_file.cpp.o:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.o
+.PHONY : __/src/main_file.cpp.o
+
+__/src/main_file.i: __/src/main_file.cpp.i
+
+.PHONY : __/src/main_file.i
+
+# target to preprocess a source file
+__/src/main_file.cpp.i:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.i
+.PHONY : __/src/main_file.cpp.i
+
+__/src/main_file.s: __/src/main_file.cpp.s
+
+.PHONY : __/src/main_file.s
+
+# target to generate assembly for a file
+__/src/main_file.cpp.s:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.s
+.PHONY : __/src/main_file.cpp.s
+
 known_test_cases.o: known_test_cases.cpp.o
 
 .PHONY : known_test_cases.o
@@ -176,6 +203,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... test"
 	@echo "... Tests.exe"
+	@echo "... __/src/main_file.o"
+	@echo "... __/src/main_file.i"
+	@echo "... __/src/main_file.s"
 	@echo "... known_test_cases.o"
 	@echo "... known_test_cases.i"
 	@echo "... known_test_cases.s"

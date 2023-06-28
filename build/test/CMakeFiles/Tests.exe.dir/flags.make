@@ -6,5 +6,5 @@ CXX_FLAGS =  -O3 -DNDEBUG
 
 CXX_DEFINES = -DMYAPP_EPETRA -DMYAPP_MPI
 
-CXX_INCLUDES = -I"/home/calistabiondic/Documents/Prep Work/NNLS/test/." -I"/home/calistabiondic/Documents/Prep Work/NNLS/test/./src_subdirTBD" -I/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include -isystem /home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen 
+CXX_INCLUDES = -I"/home/calistabiondic/Documents/Prep Work/NNLS/test/../src" -I/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include -isystem /home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen 
 

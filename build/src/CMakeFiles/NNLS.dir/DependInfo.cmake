@@ -4,8 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/calistabiondic/Documents/Prep Work/NNLS/src/main_file.cpp" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.o"
-  "/home/calistabiondic/Documents/Prep Work/NNLS/test/known_test_cases.cpp" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.o"
+  "/home/calistabiondic/Documents/Prep Work/NNLS/src/main_file.cpp" "/home/calistabiondic/Documents/Prep Work/NNLS/build/src/CMakeFiles/NNLS.dir/main_file.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -17,9 +16,6 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "../test/../src"
-  "/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include"
-  "/home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen"
   )
 
 # Targets to which this target links.

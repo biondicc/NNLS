@@ -1,0 +1,2 @@
+/usr/bin/ar qc libNNLS.a  CMakeFiles/NNLS.dir/main_file.cpp.o
+/usr/bin/ranlib libNNLS.a
