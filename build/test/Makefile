@@ -139,59 +139,59 @@ Tests.exe/fast:
 	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/build
 .PHONY : Tests.exe/fast
 
-__/src/main_file.o: __/src/main_file.cpp.o
+__/src/NNLS_solver.o: __/src/NNLS_solver.cpp.o
 
-.PHONY : __/src/main_file.o
-
-# target to build an object file
-__/src/main_file.cpp.o:
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.o
-.PHONY : __/src/main_file.cpp.o
-
-__/src/main_file.i: __/src/main_file.cpp.i
-
-.PHONY : __/src/main_file.i
-
-# target to preprocess a source file
-__/src/main_file.cpp.i:
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.i
-.PHONY : __/src/main_file.cpp.i
-
-__/src/main_file.s: __/src/main_file.cpp.s
-
-.PHONY : __/src/main_file.s
-
-# target to generate assembly for a file
-__/src/main_file.cpp.s:
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.s
-.PHONY : __/src/main_file.cpp.s
-
-known_test_cases.o: known_test_cases.cpp.o
-
-.PHONY : known_test_cases.o
+.PHONY : __/src/NNLS_solver.o
 
 # target to build an object file
-known_test_cases.cpp.o:
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.o
-.PHONY : known_test_cases.cpp.o
+__/src/NNLS_solver.cpp.o:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.o
+.PHONY : __/src/NNLS_solver.cpp.o
 
-known_test_cases.i: known_test_cases.cpp.i
+__/src/NNLS_solver.i: __/src/NNLS_solver.cpp.i
 
-.PHONY : known_test_cases.i
+.PHONY : __/src/NNLS_solver.i
 
 # target to preprocess a source file
-known_test_cases.cpp.i:
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.i
-.PHONY : known_test_cases.cpp.i
+__/src/NNLS_solver.cpp.i:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.i
+.PHONY : __/src/NNLS_solver.cpp.i
 
-known_test_cases.s: known_test_cases.cpp.s
+__/src/NNLS_solver.s: __/src/NNLS_solver.cpp.s
 
-.PHONY : known_test_cases.s
+.PHONY : __/src/NNLS_solver.s
 
 # target to generate assembly for a file
-known_test_cases.cpp.s:
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.s
-.PHONY : known_test_cases.cpp.s
+__/src/NNLS_solver.cpp.s:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.s
+.PHONY : __/src/NNLS_solver.cpp.s
+
+test_cases.o: test_cases.cpp.o
+
+.PHONY : test_cases.o
+
+# target to build an object file
+test_cases.cpp.o:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/test_cases.cpp.o
+.PHONY : test_cases.cpp.o
+
+test_cases.i: test_cases.cpp.i
+
+.PHONY : test_cases.i
+
+# target to preprocess a source file
+test_cases.cpp.i:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/test_cases.cpp.i
+.PHONY : test_cases.cpp.i
+
+test_cases.s: test_cases.cpp.s
+
+.PHONY : test_cases.s
+
+# target to generate assembly for a file
+test_cases.cpp.s:
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build" && $(MAKE) -f test/CMakeFiles/Tests.exe.dir/build.make test/CMakeFiles/Tests.exe.dir/test_cases.cpp.s
+.PHONY : test_cases.cpp.s
 
 # Help Target
 help:
@@ -203,12 +203,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... test"
 	@echo "... Tests.exe"
-	@echo "... __/src/main_file.o"
-	@echo "... __/src/main_file.i"
-	@echo "... __/src/main_file.s"
-	@echo "... known_test_cases.o"
-	@echo "... known_test_cases.i"
-	@echo "... known_test_cases.s"
+	@echo "... __/src/NNLS_solver.o"
+	@echo "... __/src/NNLS_solver.i"
+	@echo "... __/src/NNLS_solver.s"
+	@echo "... test_cases.o"
+	@echo "... test_cases.i"
+	@echo "... test_cases.s"
 .PHONY : help
 
 

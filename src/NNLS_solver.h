@@ -1,12 +1,8 @@
 #include <iostream>
 #include <string>
 #include <AztecOO_config.h>
-#ifdef HAVE_MPI
 #include <mpi.h>
 #include <Epetra_MpiComm.h>
-#else
-#include <Epetra_SerialComm.h>
-#endif
 #include <Epetra_ConfigDefs.h>
 
 
@@ -41,17 +37,20 @@ protected:
     const double tau_;
     int LS_iter_;
     double LS_tol_;
+    Eigen::VectorXd index_set;
+    std::vector<bool> Z;
+    std::vector<bool> P;
 
 public:
     int iter_;
     int numInactive_;
 
 private:
-    void Epetra_PermutationMatrix(std::vector<bool> &P, Epetra_CrsMatrix &P_mat);
-    void PositiveSetMatrix(std::vector<bool> &P, Epetra_CrsMatrix &P_mat, Eigen::VectorXd &index_set);
-    void SubIntoX(Epetra_Vector &temp, std::vector<bool> &P,  Eigen::VectorXd &index_set);
-    void AddIntoX(Epetra_Vector &temp, std::vector<bool> &P, double alpha,  Eigen::VectorXd &index_set);
-    void moveToActiveSet(int idx, Eigen::VectorXd &index_set, std::vector<bool> &P, std::vector<bool> &Z);
-    void moveToInactiveSet(int idx, Eigen::VectorXd &index_set, std::vector<bool> &P, std::vector<bool> &Z);
+    void Epetra_PermutationMatrix(Epetra_CrsMatrix &P_mat);
+    void PositiveSetMatrix(Epetra_CrsMatrix &P_mat);
+    void SubIntoX(Epetra_Vector &temp);
+    void AddIntoX(Epetra_Vector &temp, double alpha);
+    void moveToActiveSet(int idx);
+    void moveToInactiveSet(int idx);
 
 };

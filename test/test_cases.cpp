@@ -1,7 +1,7 @@
-#include <Eigen/Dense>
+#include "NNLS_solver.h"
+#include <iostream>
 #include <vector>
 #include <fstream>
-#include "main_file.h"
 
 using namespace Eigen;
 
@@ -25,6 +25,7 @@ M load_csv (const std::string & path) {
     }
     return Map<const Matrix<typename M::Scalar, M::RowsAtCompileTime, M::ColsAtCompileTime, RowMajor>>(values.data(), rows, values.size()/rows);
 }
+
 bool verify_nnls_optimality(Eigen::MatrixXd &A, Eigen::MatrixXd &b_eig, Eigen::MatrixXd &x, double tau) {
   // The NNLS optimality conditions are:
   //
@@ -92,23 +93,106 @@ bool test_nnls_known_CLASS(Eigen::MatrixXd &A_eig, int col, int row, Eigen::Matr
   return opt;
 }
 
-int main(int argc, char *argv[]){
-  MPI_Init(&argc,&argv);
-  Epetra_MpiComm Comm( MPI_COMM_WORLD );
-  const double tau = 1E-6;
-  const int max_iter = 10000;
+bool case_1 (Epetra_MpiComm &Comm, const double tau, const int max_iter) {
+  Eigen::MatrixXd A_eig(4, 2);
+  Eigen::MatrixXd x_eig(2,1);
+  Eigen::MatrixXd b_eig(4,1);
+  A_eig << 1, 1,  2, 4,  3, 9,  4, 16;
+  b_eig << 0.6, 2.2, 4.8, 8.4;
+  x_eig << 0.1, 0.5;
+  double b_pt[] = {0.6, 2.2, 4.8, 8.4};
 
-  bool ok = true;
-  MatrixXd A_eig = load_csv<MatrixXd>("C.csv");
-  MatrixXd b_eig = load_csv<MatrixXd>("d.csv");
-  MatrixXd x_eig = load_csv<MatrixXd>("x_pow_4.csv");
+  return test_nnls_known_CLASS(A_eig, 2, 4, x_eig, b_eig, b_pt, Comm, tau, max_iter);
+}
+
+bool case_2 (Epetra_MpiComm &Comm, const double tau, const int max_iter) {
+  Eigen::MatrixXd A_eig(4,3);
+  Eigen::MatrixXd b_eig(4,1);
+  Eigen::MatrixXd x_eig(3,1);
+
+  A_eig << 1,  1,  1,
+       2,  4,  8,
+       3,  9, 27,
+       4, 16, 64;
+  b_eig << 0.73, 3.24, 8.31, 16.72;
+  x_eig << 0.1, 0.5, 0.13;
+  double b_pt[] = {0.73, 3.24, 8.31, 16.72};
+
+  return test_nnls_known_CLASS(A_eig, 3, 4, x_eig, b_eig, b_pt, Comm, tau, max_iter);
+}
+
+bool case_3 (Epetra_MpiComm &Comm, const double tau, const int max_iter) {
+  Eigen::MatrixXd A_eig(4,4);
+  Eigen::MatrixXd b_eig(4,1);
+  Eigen::MatrixXd x_eig(4,1);
+
+  A_eig << 1, 1, 1, 1, 2, 4, 8, 16, 3, 9, 27, 81, 4, 16, 64, 256;
+  b_eig << 0.73, 3.24, 8.31, 16.72;
+  x_eig << 0.1, 0.5, 0.13, 0;
+  double b_pt[] = {0.73, 3.24, 8.31, 16.72};
+
+  return test_nnls_known_CLASS(A_eig, 4, 4, x_eig, b_eig, b_pt, Comm, tau, max_iter);
+}
+
+bool case_4 (Epetra_MpiComm &Comm, const double tau, const int max_iter) {
+  Eigen::MatrixXd A_eig(4,3);
+  Eigen::MatrixXd b_eig(4,1);
+  Eigen::MatrixXd x_eig(3,1);
+
+  A_eig << 1, 1, 1, 2, 4, 8, 3, 9, 27, 4, 16, 64;
+  b_eig << 0.23, 1.24, 3.81, 8.72;
+  x_eig << 0.1, 0, 0.13;
+  double b_pt[] = {0.23, 1.24, 3.81, 8.72};
+
+  return test_nnls_known_CLASS(A_eig, 3, 4, x_eig, b_eig, b_pt, Comm, tau, max_iter);
+}
+
+bool case_5 (Epetra_MpiComm &Comm, const double tau, const int max_iter) {
+  Eigen::MatrixXd A_eig(4,3);
+  Eigen::MatrixXd b_eig(4,1);
+  Eigen::MatrixXd x_eig(3,1);
+
+  A_eig << 1, 1, 1, 2, 4, 8, 3, 9, 27, 4, 16, 64;
+  b_eig << 0.13, 0.84, 2.91, 7.12;
+  x_eig << 0.0, 0.0, 0.1106544;
+  double b_pt[] = {0.13, 0.84, 2.91, 7.12};
+
+  return test_nnls_known_CLASS(A_eig, 3, 4, x_eig, b_eig, b_pt, Comm, tau, max_iter);
+}
+
+bool case_MATLAB (Epetra_MpiComm &Comm, const double tau, const int max_iter) {
+  Eigen::MatrixXd A_eig = load_csv<MatrixXd>("C.csv");
+  Eigen::MatrixXd b_eig = load_csv<MatrixXd>("d.csv");
+  Eigen:: MatrixXd x_eig = load_csv<MatrixXd>("x_pow_4.csv");
 
   double *b_pt = b_eig.data();
 
-  ok &= test_nnls_known_CLASS(A_eig, 1024, 49, x_eig, b_eig, b_pt, Comm, tau, max_iter);
+  return test_nnls_known_CLASS(A_eig, 1024, 49, x_eig, b_eig, b_pt, Comm, tau, max_iter);
+}
+
+
+int main(int argc, char *argv[]){
+  MPI_Init(&argc,&argv);
+  Epetra_MpiComm Comm( MPI_COMM_WORLD );
+  double tau = 1E-8;
+  const int max_iter = 10000;
+
+  bool ok = true;
+  std::string p = "known";
+  if (argv[1] == p){
+    ok &= case_1(Comm, tau, max_iter);
+    ok &= case_2(Comm, tau, max_iter);
+    ok &= case_3(Comm, tau, max_iter);
+    ok &= case_4(Comm, tau, max_iter);
+    // ok &= case_5(Comm, tau, max_iter);
+  }
+  else{
+    tau = 1E-4;
+    ok &= case_MATLAB(Comm, tau, max_iter);
+  }
+  
   MPI_Finalize();
 
   if (ok) return 0;
   else return 1;
 }
-

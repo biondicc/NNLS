@@ -60,42 +60,42 @@ include test/CMakeFiles/Tests.exe.dir/progress.make
 # Include the compile flags for this target's objects.
 include test/CMakeFiles/Tests.exe.dir/flags.make
 
-test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.o: test/CMakeFiles/Tests.exe.dir/flags.make
-test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.o: ../test/known_test_cases.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/calistabiondic/Documents/Prep Work/NNLS/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.o"
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/test" && /usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Tests.exe.dir/known_test_cases.cpp.o -c "/home/calistabiondic/Documents/Prep Work/NNLS/test/known_test_cases.cpp"
+test/CMakeFiles/Tests.exe.dir/test_cases.cpp.o: test/CMakeFiles/Tests.exe.dir/flags.make
+test/CMakeFiles/Tests.exe.dir/test_cases.cpp.o: ../test/test_cases.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/calistabiondic/Documents/Prep Work/NNLS/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object test/CMakeFiles/Tests.exe.dir/test_cases.cpp.o"
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/test" && /usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Tests.exe.dir/test_cases.cpp.o -c "/home/calistabiondic/Documents/Prep Work/NNLS/test/test_cases.cpp"
 
-test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Tests.exe.dir/known_test_cases.cpp.i"
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/test" && /usr/bin/mpicxx $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/calistabiondic/Documents/Prep Work/NNLS/test/known_test_cases.cpp" > CMakeFiles/Tests.exe.dir/known_test_cases.cpp.i
+test/CMakeFiles/Tests.exe.dir/test_cases.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Tests.exe.dir/test_cases.cpp.i"
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/test" && /usr/bin/mpicxx $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/calistabiondic/Documents/Prep Work/NNLS/test/test_cases.cpp" > CMakeFiles/Tests.exe.dir/test_cases.cpp.i
 
-test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Tests.exe.dir/known_test_cases.cpp.s"
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/test" && /usr/bin/mpicxx $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/calistabiondic/Documents/Prep Work/NNLS/test/known_test_cases.cpp" -o CMakeFiles/Tests.exe.dir/known_test_cases.cpp.s
+test/CMakeFiles/Tests.exe.dir/test_cases.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Tests.exe.dir/test_cases.cpp.s"
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/test" && /usr/bin/mpicxx $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/calistabiondic/Documents/Prep Work/NNLS/test/test_cases.cpp" -o CMakeFiles/Tests.exe.dir/test_cases.cpp.s
 
-test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.o: test/CMakeFiles/Tests.exe.dir/flags.make
-test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.o: ../src/main_file.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/calistabiondic/Documents/Prep Work/NNLS/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.o"
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/test" && /usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.o -c "/home/calistabiondic/Documents/Prep Work/NNLS/src/main_file.cpp"
+test/CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.o: test/CMakeFiles/Tests.exe.dir/flags.make
+test/CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.o: ../src/NNLS_solver.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/calistabiondic/Documents/Prep Work/NNLS/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object test/CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.o"
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/test" && /usr/bin/mpicxx  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.o -c "/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.cpp"
 
-test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.i"
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/test" && /usr/bin/mpicxx $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/calistabiondic/Documents/Prep Work/NNLS/src/main_file.cpp" > CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.i
+test/CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.i"
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/test" && /usr/bin/mpicxx $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.cpp" > CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.i
 
-test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.s"
-	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/test" && /usr/bin/mpicxx $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/calistabiondic/Documents/Prep Work/NNLS/src/main_file.cpp" -o CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.s
+test/CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.s"
+	cd "/home/calistabiondic/Documents/Prep Work/NNLS/build/test" && /usr/bin/mpicxx $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.cpp" -o CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.s
 
 # Object files for target Tests.exe
 Tests_exe_OBJECTS = \
-"CMakeFiles/Tests.exe.dir/known_test_cases.cpp.o" \
-"CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.o"
+"CMakeFiles/Tests.exe.dir/test_cases.cpp.o" \
+"CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.o"
 
 # External object files for target Tests.exe
 Tests_exe_EXTERNAL_OBJECTS =
 
-test/Tests.exe: test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.o
-test/Tests.exe: test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.o
+test/Tests.exe: test/CMakeFiles/Tests.exe.dir/test_cases.cpp.o
+test/Tests.exe: test/CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.o
 test/Tests.exe: test/CMakeFiles/Tests.exe.dir/build.make
 test/Tests.exe: /home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/lib/librol.so.13.1
 test/Tests.exe: /home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/lib/libintrepid.so.13.1

@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/calistabiondic/Documents/Prep Work/NNLS/src/main_file.cpp" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/CMakeFiles/Tests.exe.dir/__/src/main_file.cpp.o"
-  "/home/calistabiondic/Documents/Prep Work/NNLS/test/known_test_cases.cpp" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/CMakeFiles/Tests.exe.dir/known_test_cases.cpp.o"
+  "/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.cpp" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/CMakeFiles/Tests.exe.dir/__/src/NNLS_solver.cpp.o"
+  "/home/calistabiondic/Documents/Prep Work/NNLS/test/test_cases.cpp" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/CMakeFiles/Tests.exe.dir/test_cases.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

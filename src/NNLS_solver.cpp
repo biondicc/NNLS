@@ -1,10 +1,13 @@
 
-#include "main_file.h"
+#include "NNLS_solver.h"
 
 NNLS_solver::NNLS_solver(const Epetra_CrsMatrix &A, Epetra_MpiComm &Comm, Epetra_Vector &b, const int max_iter, const double tau):
-        A_(A), Comm_(Comm), b_(b), x_(A.ColMap()), max_iter_(max_iter), tau_(tau), LS_iter_(1000), LS_tol_(10E-8){}
+  A_(A), Comm_(Comm), b_(b), x_(A.ColMap()), max_iter_(max_iter), tau_(tau), LS_iter_(1000), LS_tol_(10E-8), Z(A_.NumMyCols()), P(A_.NumMyCols()){
+    index_set = Eigen::VectorXd::LinSpaced(A_.NumMyCols(), 0, A_.NumMyCols() -1); // Indices proceeding and including numInactive are in the P set (Inactive/Positive)
+    Z.flip();
+  }
 
-void NNLS_solver::Epetra_PermutationMatrix(std::vector<bool> &P, Epetra_CrsMatrix &P_mat){
+void NNLS_solver::Epetra_PermutationMatrix(Epetra_CrsMatrix &P_mat){
   // Fill diagonal matrix with ones in the positive set
   // No longer in use
   double posOne = 1.0;
@@ -16,7 +19,7 @@ void NNLS_solver::Epetra_PermutationMatrix(std::vector<bool> &P, Epetra_CrsMatri
   }
 }
 
-void NNLS_solver::PositiveSetMatrix(std::vector<bool> &P,  Epetra_CrsMatrix &P_mat, Eigen::VectorXd &index_set){
+void NNLS_solver::PositiveSetMatrix(Epetra_CrsMatrix &P_mat){
   // Create matrix P_mat which contains the positive set of columns in A
   int colMap[A_.NumGlobalCols()];
   int numCol = 0;
@@ -41,7 +44,7 @@ void NNLS_solver::PositiveSetMatrix(std::vector<bool> &P,  Epetra_CrsMatrix &P_m
   }
 }
 
-void NNLS_solver::SubIntoX(Epetra_Vector &temp,  std::vector<bool> &P,  Eigen::VectorXd &index_set){
+void NNLS_solver::SubIntoX(Epetra_Vector &temp){
   // Substitute new values into the solution vector
   int colMap[x_.GlobalLength()];
   int numCol = 0;
@@ -59,7 +62,7 @@ void NNLS_solver::SubIntoX(Epetra_Vector &temp,  std::vector<bool> &P,  Eigen::V
   }
 }
 
-void NNLS_solver::AddIntoX(Epetra_Vector &temp, std::vector<bool> &P, double alpha,  Eigen::VectorXd &index_set){
+void NNLS_solver::AddIntoX(Epetra_Vector &temp, double alpha){
   // Add vector temp time scalar alpha into the vector x
   int colMap[x_.GlobalLength()];
   int numCol = 0;
@@ -77,7 +80,7 @@ void NNLS_solver::AddIntoX(Epetra_Vector &temp, std::vector<bool> &P, double alp
   }
 }
 
-void NNLS_solver::moveToActiveSet(int idx, Eigen::VectorXd &index_set, std::vector<bool> &P, std::vector<bool> &Z){
+void NNLS_solver::moveToActiveSet(int idx){
   // Move index at idx into the Active Set (Z set)
   P[index_set(idx)] = 0;
   Z[index_set(idx)] = 1; 
@@ -86,7 +89,7 @@ void NNLS_solver::moveToActiveSet(int idx, Eigen::VectorXd &index_set, std::vect
   numInactive_--;
 }
 
-void NNLS_solver::moveToInactiveSet(int idx, Eigen::VectorXd &index_set, std::vector<bool> &P, std::vector<bool> &Z){
+void NNLS_solver::moveToInactiveSet(int idx){
   // Move index at idx into the Inactive Set (P set)
   P[index_set(idx)] = 1;
   Z[index_set(idx)] = 0;
@@ -97,12 +100,7 @@ void NNLS_solver::moveToInactiveSet(int idx, Eigen::VectorXd &index_set, std::ve
 
 bool NNLS_solver::solve(){
   iter_ = 0;
-  Eigen::VectorXd index_set;
-  index_set = Eigen::VectorXd::LinSpaced(A_.NumMyCols(), 0, A_.NumMyCols() -1); // Indices proceeding and including numInactive are in the P set (Inactive/Positive)
   numInactive_ = 0;
-  std::vector<bool> Z(A_.NumMyCols());
-  Z.flip();
-  std::vector<bool> P(A_.NumMyCols());
 
   Epetra_CrsMatrix AtA(Epetra_DataAccess::View, A_.ColMap(), A_.NumMyCols());
   EpetraExt::MatrixMatrix::Multiply(A_, true, A_, false, AtA);
@@ -157,7 +155,7 @@ bool NNLS_solver::solve(){
       return true;
     }
     
-    moveToInactiveSet(argmaxGradient, index_set, P, Z);
+    moveToInactiveSet(argmaxGradient);
 
     // INNER LOOP
     while(true){
@@ -170,7 +168,7 @@ bool NNLS_solver::solve(){
       Epetra_Map Map(A_.NumGlobalRows(),0,Comm_);
       Epetra_Map ColMap(numInactive_,0,Comm_);
       Epetra_CrsMatrix P_mat(Epetra_DataAccess::Copy, Map, numInactive_);
-      PositiveSetMatrix(P,  P_mat, index_set);
+      PositiveSetMatrix(P_mat);
       P_mat.FillComplete(ColMap, Map);
 
       // Create temporary solution vector temp which is only the length of numInactive
@@ -224,17 +222,17 @@ bool NNLS_solver::solve(){
 
       // If solution is feasible, exit to outer loop
       if (feasible){
-        SubIntoX(temp, P, index_set);
+        SubIntoX(temp);
         // std::cout << "sub temp: " << x << std::endl;
         break;
       }
 
       // Infeasible solution -> interpolate to feasible one
-      AddIntoX(temp, P, alpha, index_set);
+      AddIntoX(temp, alpha);
       // std::cout << "added with alpha: " << x << std::endl;
 
       // Remove these indices from the inactive set
-      moveToActiveSet(infeasibleIdx, index_set, P, Z);
+      moveToActiveSet(infeasibleIdx);
     }
     
   }

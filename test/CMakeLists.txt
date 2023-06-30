@@ -15,7 +15,7 @@ LINK_DIRECTORIES (${Trilinos_LIBRARY_DIRS} ${Trilinos_TPL_LIBRARY_DIRS})
 file(GLOB MY_FILES "*.csv")
 file(COPY ${MY_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-ADD_EXECUTABLE(Tests.exe known_test_cases.cpp ../src/main_file.cpp)
+ADD_EXECUTABLE(Tests.exe test_cases.cpp ../src/NNLS_solver.cpp)
 TARGET_LINK_LIBRARIES(Tests.exe ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}) 
 target_link_libraries(Tests.exe Eigen3::Eigen)
 

@@ -6,7 +6,11 @@
 
 #IncludeRegexTransform: 
 
-../src/main_file.h
+/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.cpp
+NNLS_solver.h
+/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.h
+
+/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.h
 iostream
 -
 string
@@ -16,8 +20,6 @@ AztecOO_config.h
 mpi.h
 -
 Epetra_MpiComm.h
--
-Epetra_SerialComm.h
 -
 Epetra_ConfigDefs.h
 -
@@ -40,16 +42,6 @@ Amesos.h
 Amesos_BaseSolver.h
 -
 Eigen/Dense
--
-
-/home/calistabiondic/Documents/Prep Work/NNLS/test/known_test_cases.cpp
-main_file.h
-/home/calistabiondic/Documents/Prep Work/NNLS/test/main_file.h
-iostream
--
-vector
--
-fstream
 -
 
 /home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen/Eigen/Cholesky
@@ -2123,22 +2115,6 @@ Epetra_Operator.h
 /home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include/Epetra_Operator.h
 Epetra_SrcDistObject.h
 /home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include/Epetra_SrcDistObject.h
-
-/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include/Epetra_SerialComm.h
-Epetra_ConfigDefs.h
-/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include/Epetra_ConfigDefs.h
-Epetra_Object.h
-/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include/Epetra_Object.h
-Epetra_Comm.h
-/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include/Epetra_Comm.h
-Epetra_SerialCommData.h
-/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include/Epetra_SerialCommData.h
-omp.h
--
-
-/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include/Epetra_SerialCommData.h
-Epetra_Data.h
-/home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include/Epetra_Data.h
 
 /home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include/Epetra_SrcDistObject.h
 Epetra_ConfigDefs.h
