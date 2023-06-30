@@ -1,24 +1,30 @@
 #include "main_file.h"
 #include <iostream>
-#include <string>
-#include <AztecOO_config.h>
-#ifdef HAVE_MPI
-#include <mpi.h>
-#include <Epetra_MpiComm.h>
-#else
-#include <Epetra_SerialComm.h>
-#endif
-#include <Epetra_ConfigDefs.h>
+#include <vector>
+#include <fstream>
 
+using namespace Eigen;
 
-#include <Epetra_Map.h>
-#include <Epetra_CrsMatrix.h>
-#include <Epetra_Vector.h>
-#include <Epetra_MultiVector.h>
-#include <Epetra_LinearProblem.h>
-#include <EpetraExt_MatrixMatrix.h>
-#include <AztecOO.h>
-#include <Eigen/Dense>
+template<typename M>
+M load_csv (const std::string & path) {
+    std::ifstream indata;
+    indata.open(path);
+
+    // std::cout << indata.fail() << std::endl;
+
+    std::string line;
+    std::vector<double> values;
+    uint rows = 0;
+    while (std::getline(indata, line)) {
+        std::stringstream lineStream(line);
+        std::string cell;
+        while (std::getline(lineStream, cell, ',')) {
+            values.push_back(std::stod(cell));
+        }
+        ++rows;
+    }
+    return Map<const Matrix<typename M::Scalar, M::RowsAtCompileTime, M::ColsAtCompileTime, RowMajor>>(values.data(), rows, values.size()/rows);
+}
 
 bool verify_nnls_optimality(Eigen::MatrixXd &A, Eigen::MatrixXd &b_eig, Eigen::MatrixXd &x, double tau) {
   // The NNLS optimality conditions are:
@@ -195,20 +201,37 @@ bool case_5 (Epetra_MpiComm &Comm, const double tau, const int max_iter) {
   return test_nnls_known_CLASS(A_eig, 3, 4, x_eig, b_eig, b_pt, Comm, tau, max_iter);
 }
 
+bool case_MATLAB (Epetra_MpiComm &Comm, const double tau, const int max_iter) {
+  Eigen::MatrixXd A_eig = load_csv<MatrixXd>("C.csv");
+  Eigen::MatrixXd b_eig = load_csv<MatrixXd>("d.csv");
+  Eigen:: MatrixXd x_eig = load_csv<MatrixXd>("x_pow_4.csv");
+
+  double *b_pt = b_eig.data();
+
+  return test_nnls_known_CLASS(A_eig, 1024, 49, x_eig, b_eig, b_pt, Comm, tau, max_iter);
+}
+
+
 int main(int argc, char *argv[]){
   MPI_Init(&argc,&argv);
   Epetra_MpiComm Comm( MPI_COMM_WORLD );
-  const double tau = 1E-8;
-  const int max_iter = 1000;
+  double tau = 1E-8;
+  const int max_iter = 10000;
 
-  std::cout << " Test 1 "<< std::endl;
   bool ok = true;
-  ok &= case_1(Comm, tau, max_iter);
-  ok &= case_2(Comm, tau, max_iter);
-  ok &= case_3(Comm, tau, max_iter);
-  ok &= case_4(Comm, tau, max_iter);
-  //ok &= case_5(Comm, tau, max_iter);
-
+  std::string p = "known";
+  if (argv[1] == p){
+    ok &= case_1(Comm, tau, max_iter);
+    ok &= case_2(Comm, tau, max_iter);
+    ok &= case_3(Comm, tau, max_iter);
+    ok &= case_4(Comm, tau, max_iter);
+    // ok &= case_5(Comm, tau, max_iter);
+  }
+  else{
+    tau = 1E-4;
+    ok &= case_MATLAB(Comm, tau, max_iter);
+  }
+  
   MPI_Finalize();
 
   if (ok) return 0;

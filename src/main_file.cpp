@@ -176,14 +176,32 @@ bool NNLS_solver::solve(){
       // Create temporary solution vector temp which is only the length of numInactive
       Epetra_Vector temp(P_mat.ColMap());
 
+      // Set up normal equations
+      Epetra_CrsMatrix PtP(Epetra_DataAccess::View, P_mat.ColMap(), P_mat.NumMyCols());
+      EpetraExt::MatrixMatrix::Multiply(P_mat, true, P_mat, false, PtP);
+
+      Epetra_Vector Ptb (P_mat.ColMap());
+      P_mat.Multiply(true, b_, Ptb);
+
       // Solve least-squares problem in inactive set only with Aztec00
-      Epetra_LinearProblem problem(&P_mat, &temp, &b_);
-      AztecOO solver(problem);
+      Epetra_LinearProblem problem(&PtP, &temp, &Ptb);
+/*       AztecOO solver(problem);
 
       solver.SetAztecOption(AZ_conv, AZ_rhs);
       solver.SetAztecOption( AZ_precond, AZ_Jacobi);
       solver.SetAztecOption(AZ_output, AZ_none);
-      solver.Iterate(LS_iter_, LS_tol_);
+      solver.Iterate(LS_iter_, LS_tol_); */
+
+      Amesos Factory;
+      std::string SolverType = "Klu";
+      std::unique_ptr<Amesos_BaseSolver> Solver(Factory.Create(SolverType, problem));
+
+      Teuchos::ParameterList List;
+      Solver->SetParameters(List);
+      Solver->SymbolicFactorization();
+      Solver->NumericFactorization();
+      Solver->Solve();
+      //std::cout << temp << std::endl;
       iter_++; // The solve is expensive, so that is what we count as an iteration.
       
       // Check feasability...

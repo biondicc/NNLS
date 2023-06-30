@@ -209,9 +209,6 @@ EIGEN3_INCLUDE_DIR:PATH=/home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/
 //No help, variable specified on the command line.
 Eigen3_DIR:PATH=/home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen/build_dir
 
-//The directory containing a CMake configuration file for MPICXX.
-MPICXX_DIR:PATH=MPICXX_DIR-NOTFOUND
-
 //Value Computed by CMake
 MyApp_BINARY_DIR:STATIC=/home/calistabiondic/Documents/Prep Work/NNLS/build
 

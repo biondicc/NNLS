@@ -12,11 +12,16 @@ MESSAGE("   Eigen_Dir = ${EIGEN3_INCLUDE_DIR}")
 LINK_DIRECTORIES ( ${EIGEN3_INCLUDE_DIR} )
 LINK_DIRECTORIES (${Trilinos_LIBRARY_DIRS} ${Trilinos_TPL_LIBRARY_DIRS})
 
+file(GLOB MY_FILES "*.csv")
+file(COPY ${MY_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 ADD_EXECUTABLE(Tests.exe known_test_cases.cpp ../src/main_file.cpp)
 TARGET_LINK_LIBRARIES(Tests.exe ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}) 
 target_link_libraries(Tests.exe Eigen3::Eigen)
-target_link_libraries(Tests.exe)
-ADD_TEST(NAME Tests.exe
-COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe>)
 
+ADD_TEST(NAME known_tests
+COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> known)
+
+ADD_TEST(NAME matlab_test
+COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> matlab)
 

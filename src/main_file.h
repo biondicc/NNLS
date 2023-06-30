@@ -17,6 +17,8 @@
 #include <Epetra_LinearProblem.h>
 #include <EpetraExt_MatrixMatrix.h>
 #include <AztecOO.h>
+#include <Amesos.h>
+#include <Amesos_BaseSolver.h>
 #include <Eigen/Dense>
 
 using Eigen::Matrix;

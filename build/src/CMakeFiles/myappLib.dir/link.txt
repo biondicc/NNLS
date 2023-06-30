@@ -1,2 +1,0 @@
-/usr/bin/ar qc libmyappLib.a  CMakeFiles/myappLib.dir/main_file.cpp.o
-/usr/bin/ranlib libmyappLib.a
