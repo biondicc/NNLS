@@ -25,3 +25,30 @@ COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> known)
 ADD_TEST(NAME matlab_test
 COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> matlab)
 
+ADD_TEST(NAME no_cols_matrix
+COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> noCols)
+
+ADD_TEST(NAME empty_matrix
+COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> empty)
+
+ADD_TEST(NAME random_problem
+COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> random)
+
+ADD_TEST(NAME zero_RHS
+COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> zeroRHS)
+
+ADD_TEST(NAME dependent_columns
+COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> depCols)
+
+ADD_TEST(NAME wide_matrix
+COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> wide)
+
+ADD_TEST(NAME zero_iter_w_sol
+COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> zeroIter)
+
+ADD_TEST(NAME n_iter
+COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> nIter)
+
+ADD_TEST(NAME max_iter
+COMMAND ${MPIGO} $<TARGET_FILE:Tests.exe> maxIter)
+

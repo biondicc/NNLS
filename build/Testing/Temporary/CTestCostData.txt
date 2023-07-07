@@ -1,3 +1,12 @@
-known_tests 5 0.0772706
-matlab_test 3 0.231281
+known_tests 22 0.0157874
+matlab_test 20 0.030628
+no_cols_matrix 17 0.0223981
+empty_matrix 15 0.0252761
+random_problem 11 0.0966243
+zero_RHS 10 0.0383643
+dependent_columns 8 0.262096
+wide_matrix 7 0.0562723
+zero_iter_w_sol 5 0.0782275
+n_iter 4 0.0934223
+max_iter 1 0.41551
 ---

@@ -138,7 +138,7 @@ bool NNLS_solver::solve(){
 
     int numActive = A_.NumGlobalCols() - numInactive_;
     int argmaxGradient = -1;
-    grad_eig(index_set.tail(numActive)).maxCoeff(&argmaxGradient);
+    const double maxGradient = grad_eig(index_set.tail(numActive)).maxCoeff(&argmaxGradient);
     argmaxGradient += numInactive_;
 
     residual = b_;
@@ -154,6 +154,9 @@ bool NNLS_solver::solve(){
     if ((normRes[0]) <= (tau_ * normb[0])){
       return true;
     }
+/*     if (maxGradient < tau_){
+      return true;
+    } */
     
     moveToInactiveSet(argmaxGradient);
 
@@ -223,13 +226,13 @@ bool NNLS_solver::solve(){
       // If solution is feasible, exit to outer loop
       if (feasible){
         SubIntoX(temp);
-        // std::cout << "sub temp: " << x << std::endl;
+        // std::cout << "sub temp: " << x_ << std::endl;
         break;
       }
 
       // Infeasible solution -> interpolate to feasible one
       AddIntoX(temp, alpha);
-      // std::cout << "added with alpha: " << x << std::endl;
+      // std::cout << "added with alpha: " << x_ << std::endl;
 
       // Remove these indices from the inactive set
       moveToActiveSet(infeasibleIdx);

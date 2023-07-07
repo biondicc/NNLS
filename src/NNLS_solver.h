@@ -27,6 +27,10 @@ public:
     virtual ~NNLS_solver() {}; ///< Destructor.
     bool solve();
     Epetra_Vector & getSolution() {return x_;}
+    void startingSolution(Epetra_Vector &start) {
+        P.flip();
+        SubIntoX(start);
+        P.flip();}
   
 protected:
     const Epetra_CrsMatrix A_;

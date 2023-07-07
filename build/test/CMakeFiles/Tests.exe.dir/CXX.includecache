@@ -6,11 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.cpp
-NNLS_solver.h
-/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.h
-
-/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.h
+../src/NNLS_solver.h
 iostream
 -
 string
@@ -42,6 +38,20 @@ Amesos.h
 Amesos_BaseSolver.h
 -
 Eigen/Dense
+-
+
+/home/calistabiondic/Documents/Prep Work/NNLS/test/test_cases.cpp
+NNLS_solver.h
+/home/calistabiondic/Documents/Prep Work/NNLS/test/NNLS_solver.h
+iostream
+-
+vector
+-
+fstream
+-
+Eigen/QR
+-
+test/random_matrix_helper.h
 -
 
 /home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen/Eigen/Cholesky
@@ -1690,6 +1700,8 @@ type_traits
 ./InternalHeaderCheck.h
 /home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen/Eigen/src/QR/InternalHeaderCheck.h
 
+/home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen/Eigen/src/QR/InternalHeaderCheck.h
+
 /home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen/Eigen/src/SVD/BDCSVD.h
 ./InternalHeaderCheck.h
 /home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen/Eigen/src/SVD/InternalHeaderCheck.h
@@ -1769,6 +1781,12 @@ IndexedViewMethods.h
 /home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen/Eigen/src/plugins/ReshapedMethods.h
 ReshapedMethods.h
 /home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen/Eigen/src/plugins/ReshapedMethods.h
+
+/home/calistabiondic/PHiLiP_ETC/Codes/PHiLiP/submodules/eigen/test/random_matrix_helper.h
+typeinfo
+-
+Eigen/QR
+-
 
 /home/calistabiondic/PHiLiP_ETC/Libraries/Trilinos/install/include/Amesos.h
 Amesos_BaseSolver.h
