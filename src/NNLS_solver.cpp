@@ -4,7 +4,7 @@
 NNLS_solver::NNLS_solver(const Epetra_CrsMatrix &A, Epetra_MpiComm &Comm, Epetra_Vector &b, const int max_iter, const double tau):
   A_(A), Comm_(Comm), b_(b), x_(A.ColMap()), max_iter_(max_iter), tau_(tau), LS_iter_(1000), LS_tol_(10E-8), Z(A_.NumMyCols()), P(A_.NumMyCols()){
     index_set = Eigen::VectorXd::LinSpaced(A_.NumMyCols(), 0, A_.NumMyCols() -1); // Indices proceeding and including numInactive are in the P set (Inactive/Positive)
-    Z.flip();
+    Z.flip(); // All columns begin in the Z set (Active)
   }
 
 void NNLS_solver::Epetra_PermutationMatrix(Epetra_CrsMatrix &P_mat){
@@ -21,6 +21,8 @@ void NNLS_solver::Epetra_PermutationMatrix(Epetra_CrsMatrix &P_mat){
 
 void NNLS_solver::PositiveSetMatrix(Epetra_CrsMatrix &P_mat){
   // Create matrix P_mat which contains the positive set of columns in A
+
+  // Create map between index_set and the columns to be added to P_mat
   int colMap[A_.NumGlobalCols()];
   int numCol = 0;
   for(int j = 0; j < A_.NumGlobalCols(); j++){
@@ -30,6 +32,8 @@ void NNLS_solver::PositiveSetMatrix(Epetra_CrsMatrix &P_mat){
       numCol++;
     }
   }
+
+  // Fill Epetra_CrsMatrix P_mat with columns of A in set P
   for(int i =0; i < A_.NumGlobalRows(); i++){
     double row[A_.NumGlobalCols()];
     int numE;
@@ -102,6 +106,7 @@ bool NNLS_solver::solve(){
   iter_ = 0;
   numInactive_ = 0;
 
+  // Pre-mult by A^T
   Epetra_CrsMatrix AtA(Epetra_DataAccess::View, A_.ColMap(), A_.NumMyCols());
   EpetraExt::MatrixMatrix::Multiply(A_, true, A_, false, AtA);
 
@@ -125,7 +130,7 @@ bool NNLS_solver::solve(){
 
     AtA.Multiply(false, x_, AtAx);
     gradient = Atb;
-    gradient.Update(-1.0, AtAx, 1.0);
+    gradient.Update(-1.0, AtAx, 1.0); // gradient = A^T * (b-A*x)
     // std::cout << gradient << std::endl;
 
     grad_col = *gradient(0);
@@ -133,9 +138,8 @@ bool NNLS_solver::solve(){
       grad_eig[i] = grad_col[i];
     }
     
-    // Find the maximum element of the gradient in the active set.
-    // Move that variable to the inactive set.
-
+    // Find the maximum element of the gradient in the active set
+    // Move that variable to the inactive set
     int numActive = A_.NumGlobalCols() - numInactive_;
     int argmaxGradient = -1;
     const double maxGradient = grad_eig(index_set.tail(numActive)).maxCoeff(&argmaxGradient);
@@ -143,7 +147,7 @@ bool NNLS_solver::solve(){
 
     residual = b_;
     A_.Multiply(false, x_, Ax);
-    residual.Update(-1.0, Ax, 1.0);
+    residual.Update(-1.0, Ax, 1.0); // residual = b - A*x
     // std::cout << residual << std::endl;
     double normRes[1];
     residual.Norm2(normRes);
@@ -154,6 +158,7 @@ bool NNLS_solver::solve(){
     if ((normRes[0]) <= (tau_ * normb[0])){
       return true;
     }
+    // Old exit condition dependent on the maxGradient
 /*     if (maxGradient < tau_){
       return true;
     } */
@@ -184,15 +189,20 @@ bool NNLS_solver::solve(){
       Epetra_Vector Ptb (P_mat.ColMap());
       P_mat.Multiply(true, b_, Ptb);
 
-      // Solve least-squares problem in inactive set only with Aztec00
-      Epetra_LinearProblem problem(&PtP, &temp, &Ptb);
-/*       AztecOO solver(problem);
+      // NOTE: an iterative solver can be used by un-commenting the text below and commenting out lines 203-214
+
+/*    Epetra_LinearProblem problem(&P_mat, &temp, &b_);
+      AztecOO solver(problem);
 
       solver.SetAztecOption(AZ_conv, AZ_rhs);
       solver.SetAztecOption( AZ_precond, AZ_Jacobi);
       solver.SetAztecOption(AZ_output, AZ_none);
       solver.Iterate(LS_iter_, LS_tol_); */
 
+      // Solve least-squares problem in inactive set only
+      Epetra_LinearProblem problem(&PtP, &temp, &Ptb);
+
+      // Direct Solver Setup
       Amesos Factory;
       std::string SolverType = "Klu";
       std::unique_ptr<Amesos_BaseSolver> Solver(Factory.Create(SolverType, problem));
@@ -203,7 +213,7 @@ bool NNLS_solver::solve(){
       Solver->NumericFactorization();
       Solver->Solve();
       //std::cout << temp << std::endl;
-      iter_++; // The solve is expensive, so that is what we count as an iteration.
+      iter_++; // The solve is expensive, so that is what we count as an iteration
       
       // Check feasability...
       bool feasible = true;
@@ -234,7 +244,7 @@ bool NNLS_solver::solve(){
       AddIntoX(temp, alpha);
       // std::cout << "added with alpha: " << x_ << std::endl;
 
-      // Remove these indices from the inactive set
+      // Remove the infeasibleIdx column from the inactive set
       moveToActiveSet(infeasibleIdx);
     }
     

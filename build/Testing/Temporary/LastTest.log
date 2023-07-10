@@ -1,10 +1,10 @@
-Start testing: Jul 07 15:56 EDT
+Start testing: Jul 10 18:26 EDT
 ----------------------------------------------------------
 1/11 Testing: known_tests
 1/11 Test: known_tests
 Command: "/usr/bin/mpiexec" "-np" "1" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/Tests.exe" "known"
 Directory: /home/calistabiondic/Documents/Prep Work/NNLS/build/test
-"known_tests" start time: Jul 07 15:56 EDT
+"known_tests" start time: Jul 10 18:26 EDT
 Output:
 ----------------------------------------------------------
  Matrix A 
@@ -43,7 +43,6 @@ Epetra::Vector     MyPID           GID               Value
          0             0                     0.1
          0             1                     0.5
 
-1
  Matrix A 
 Epetra::CrsMatrix
 Number of Global Rows        = 4
@@ -85,7 +84,6 @@ Epetra::Vector     MyPID           GID               Value
          0             1                     0.5
          0             2                    0.13
 
-1
  Matrix A 
 Epetra::CrsMatrix
 Number of Global Rows        = 4
@@ -132,7 +130,6 @@ Epetra::Vector     MyPID           GID               Value
          0             2                    0.13
          0             3             2.42722e-13
 
-1
  Matrix A 
 Epetra::CrsMatrix
 Number of Global Rows        = 4
@@ -174,12 +171,53 @@ Epetra::Vector     MyPID           GID               Value
          0             1             7.89646e-15
          0             2                    0.13
 
-1
+ Matrix A 
+Epetra::CrsMatrix
+Number of Global Rows        = 4
+Number of Global Cols        = 3
+Number of Global Diagonals   = 3
+Number of Global Nonzeros    = 12
+Global Maximum Num Entries   = 3
+
+Number of My Rows        = 4
+Number of My Cols        = 3
+Number of My Diagonals   = 3
+Number of My Nonzeros    = 12
+My Maximum Num Entries   = 3
+
+   Processor    Row Index    Col Index           Value     
+       0             0             0                       1    
+       0             0             1                       1    
+       0             0             2                       1    
+       0             1             0                       2    
+       0             1             1                       4    
+       0             1             2                       8    
+       0             2             0                       3    
+       0             2             1                       9    
+       0             2             2                      27    
+       0             3             0                       4    
+       0             3             1                      16    
+       0             3             2                      64    
+
+ Vector b 
+Epetra::Vector     MyPID           GID               Value  
+         0             0                    0.13
+         0             1                    0.84
+         0             2                    2.91
+         0             3                    7.12
+
+ Solution x 
+Epetra::Vector     MyPID           GID               Value  
+         0             0                       0
+         0             1                       0
+         0             2                0.110654
+
+Exited due to maximum iterations, not necessarily optimum solution
 <end of output>
-Test time =   0.35 sec
+Test time =   0.97 sec
 ----------------------------------------------------------
 Test Passed.
-"known_tests" end time: Jul 07 15:56 EDT
+"known_tests" end time: Jul 10 18:26 EDT
 "known_tests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -187,7 +225,7 @@ Test Passed.
 2/11 Test: matlab_test
 Command: "/usr/bin/mpiexec" "-np" "1" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/Tests.exe" "matlab"
 Directory: /home/calistabiondic/Documents/Prep Work/NNLS/build/test
-"matlab_test" start time: Jul 07 15:56 EDT
+"matlab_test" start time: Jul 10 18:26 EDT
 Output:
 ----------------------------------------------------------
  Matrix A 
@@ -51461,12 +51499,11 @@ Epetra::Vector     MyPID           GID               Value
          0          1022                       0
          0          1023                       0
 
-1
 <end of output>
-Test time =   0.61 sec
+Test time =   0.67 sec
 ----------------------------------------------------------
 Test Passed.
-"matlab_test" end time: Jul 07 15:56 EDT
+"matlab_test" end time: Jul 10 18:26 EDT
 "matlab_test" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -51474,14 +51511,14 @@ Test Passed.
 3/11 Test: no_cols_matrix
 Command: "/usr/bin/mpiexec" "-np" "1" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/Tests.exe" "noCols"
 Directory: /home/calistabiondic/Documents/Prep Work/NNLS/build/test
-"no_cols_matrix" start time: Jul 07 15:56 EDT
+"no_cols_matrix" start time: Jul 10 18:26 EDT
 Output:
 ----------------------------------------------------------
 <end of output>
-Test time =   0.38 sec
+Test time =   0.42 sec
 ----------------------------------------------------------
 Test Passed.
-"no_cols_matrix" end time: Jul 07 15:56 EDT
+"no_cols_matrix" end time: Jul 10 18:26 EDT
 "no_cols_matrix" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -51489,14 +51526,14 @@ Test Passed.
 4/11 Test: empty_matrix
 Command: "/usr/bin/mpiexec" "-np" "1" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/Tests.exe" "empty"
 Directory: /home/calistabiondic/Documents/Prep Work/NNLS/build/test
-"empty_matrix" start time: Jul 07 15:56 EDT
+"empty_matrix" start time: Jul 10 18:26 EDT
 Output:
 ----------------------------------------------------------
 <end of output>
-Test time =   0.38 sec
+Test time =   0.41 sec
 ----------------------------------------------------------
 Test Passed.
-"empty_matrix" end time: Jul 07 15:56 EDT
+"empty_matrix" end time: Jul 10 18:26 EDT
 "empty_matrix" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -51504,7 +51541,7 @@ Test Passed.
 5/11 Test: random_problem
 Command: "/usr/bin/mpiexec" "-np" "1" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/Tests.exe" "random"
 Directory: /home/calistabiondic/Documents/Prep Work/NNLS/build/test
-"random_problem" start time: Jul 07 15:56 EDT
+"random_problem" start time: Jul 10 18:26 EDT
 Output:
 ----------------------------------------------------------
  Matrix A 
@@ -53599,18 +53636,18 @@ Epetra::Vector     MyPID           GID               Value
 
 Gradient is small/negative, but residual is not necessarily small
 <end of output>
-Test time =   1.06 sec
+Test time =   0.42 sec
 ----------------------------------------------------------
 Test Passed.
-"random_problem" end time: Jul 07 15:56 EDT
-"random_problem" time elapsed: 00:00:01
+"random_problem" end time: Jul 10 18:26 EDT
+"random_problem" time elapsed: 00:00:00
 ----------------------------------------------------------
 
 6/11 Testing: zero_RHS
 6/11 Test: zero_RHS
 Command: "/usr/bin/mpiexec" "-np" "1" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/Tests.exe" "zeroRHS"
 Directory: /home/calistabiondic/Documents/Prep Work/NNLS/build/test
-"zero_RHS" start time: Jul 07 15:56 EDT
+"zero_RHS" start time: Jul 10 18:26 EDT
 Output:
 ----------------------------------------------------------
  Matrix A 
@@ -55703,10 +55740,10 @@ Epetra::Vector     MyPID           GID               Value
          0            42                       0
 
 <end of output>
-Test time =   0.38 sec
+Test time =   0.31 sec
 ----------------------------------------------------------
 Test Passed.
-"zero_RHS" end time: Jul 07 15:56 EDT
+"zero_RHS" end time: Jul 10 18:26 EDT
 "zero_RHS" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -55714,7 +55751,7 @@ Test Passed.
 7/11 Test: dependent_columns
 Command: "/usr/bin/mpiexec" "-np" "1" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/Tests.exe" "depCols"
 Directory: /home/calistabiondic/Documents/Prep Work/NNLS/build/test
-"dependent_columns" start time: Jul 07 15:56 EDT
+"dependent_columns" start time: Jul 10 18:26 EDT
 Output:
 ----------------------------------------------------------
  Matrix A 
@@ -57854,12 +57891,11 @@ Epetra::Vector     MyPID           GID               Value
          0            42                0.265701
          0            43                       0
 
-Gradient is small/negative, but residual is not necessarily small
 <end of output>
-Test time =   2.10 sec
+Test time =   2.01 sec
 ----------------------------------------------------------
 Test Passed.
-"dependent_columns" end time: Jul 07 15:56 EDT
+"dependent_columns" end time: Jul 10 18:26 EDT
 "dependent_columns" time elapsed: 00:00:02
 ----------------------------------------------------------
 
@@ -57867,7 +57903,7 @@ Test Passed.
 8/11 Test: wide_matrix
 Command: "/usr/bin/mpiexec" "-np" "1" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/Tests.exe" "wide"
 Directory: /home/calistabiondic/Documents/Prep Work/NNLS/build/test
-"wide_matrix" start time: Jul 07 15:56 EDT
+"wide_matrix" start time: Jul 10 18:26 EDT
 Output:
 ----------------------------------------------------------
  Matrix A 
@@ -58728,10 +58764,10 @@ Epetra::Vector     MyPID           GID               Value
          0            42                       0
 
 <end of output>
-Test time =   0.39 sec
+Test time =   0.38 sec
 ----------------------------------------------------------
 Test Passed.
-"wide_matrix" end time: Jul 07 15:56 EDT
+"wide_matrix" end time: Jul 10 18:26 EDT
 "wide_matrix" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -58739,7 +58775,7 @@ Test Passed.
 9/11 Test: zero_iter_w_sol
 Command: "/usr/bin/mpiexec" "-np" "1" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/Tests.exe" "zeroIter"
 Directory: /home/calistabiondic/Documents/Prep Work/NNLS/build/test
-"zero_iter_w_sol" start time: Jul 07 15:56 EDT
+"zero_iter_w_sol" start time: Jul 10 18:26 EDT
 Output:
 ----------------------------------------------------------
  Matrix A 
@@ -59105,10 +59141,10 @@ Epetra::Vector     MyPID           GID               Value
          0             9                  1.0152
 
 <end of output>
-Test time =   0.39 sec
+Test time =   0.41 sec
 ----------------------------------------------------------
 Test Passed.
-"zero_iter_w_sol" end time: Jul 07 15:56 EDT
+"zero_iter_w_sol" end time: Jul 10 18:26 EDT
 "zero_iter_w_sol" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -59116,7 +59152,7 @@ Test Passed.
 10/11 Test: n_iter
 Command: "/usr/bin/mpiexec" "-np" "1" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/Tests.exe" "nIter"
 Directory: /home/calistabiondic/Documents/Prep Work/NNLS/build/test
-"n_iter" start time: Jul 07 15:56 EDT
+"n_iter" start time: Jul 10 18:26 EDT
 Output:
 ----------------------------------------------------------
  Matrix A 
@@ -59482,10 +59518,10 @@ Epetra::Vector     MyPID           GID               Value
          0             9                  1.0152
 
 <end of output>
-Test time =   0.37 sec
+Test time =   0.34 sec
 ----------------------------------------------------------
 Test Passed.
-"n_iter" end time: Jul 07 15:56 EDT
+"n_iter" end time: Jul 10 18:26 EDT
 "n_iter" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -59493,7 +59529,7 @@ Test Passed.
 11/11 Test: max_iter
 Command: "/usr/bin/mpiexec" "-np" "1" "/home/calistabiondic/Documents/Prep Work/NNLS/build/test/Tests.exe" "maxIter"
 Directory: /home/calistabiondic/Documents/Prep Work/NNLS/build/test
-"max_iter" start time: Jul 07 15:56 EDT
+"max_iter" start time: Jul 10 18:26 EDT
 Output:
 ----------------------------------------------------------
  Matrix A 
@@ -59860,11 +59896,11 @@ Epetra::Vector     MyPID           GID               Value
          0             9                0.759162
 
 <end of output>
-Test time =   0.42 sec
+Test time =   0.38 sec
 ----------------------------------------------------------
 Test Passed.
-"max_iter" end time: Jul 07 15:56 EDT
+"max_iter" end time: Jul 10 18:26 EDT
 "max_iter" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Jul 07 15:56 EDT
+End testing: Jul 10 18:26 EDT

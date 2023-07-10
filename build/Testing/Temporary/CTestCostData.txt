@@ -1,12 +1,12 @@
-known_tests 22 0.0157874
-matlab_test 20 0.030628
-no_cols_matrix 17 0.0223981
-empty_matrix 15 0.0252761
-random_problem 11 0.0966243
-zero_RHS 10 0.0383643
-dependent_columns 8 0.262096
-wide_matrix 7 0.0562723
-zero_iter_w_sol 5 0.0782275
-n_iter 4 0.0934223
-max_iter 1 0.41551
+known_tests 24 0.0402922
+matlab_test 23 0.029151
+no_cols_matrix 20 0.0209182
+empty_matrix 18 0.0228549
+random_problem 14 0.0298322
+zero_RHS 13 0.0237151
+dependent_columns 11 0.182917
+wide_matrix 10 0.0381177
+zero_iter_w_sol 8 0.0507678
+n_iter 7 0.04927
+max_iter 4 0.0957679
 ---

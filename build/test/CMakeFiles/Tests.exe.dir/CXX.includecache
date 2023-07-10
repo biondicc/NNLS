@@ -40,6 +40,44 @@ Amesos_BaseSolver.h
 Eigen/Dense
 -
 
+/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.cpp
+NNLS_solver.h
+/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.h
+
+/home/calistabiondic/Documents/Prep Work/NNLS/src/NNLS_solver.h
+iostream
+-
+string
+-
+AztecOO_config.h
+-
+mpi.h
+-
+Epetra_MpiComm.h
+-
+Epetra_ConfigDefs.h
+-
+Epetra_Map.h
+-
+Epetra_CrsMatrix.h
+-
+Epetra_Vector.h
+-
+Epetra_MultiVector.h
+-
+Epetra_LinearProblem.h
+-
+EpetraExt_MatrixMatrix.h
+-
+AztecOO.h
+-
+Amesos.h
+-
+Amesos_BaseSolver.h
+-
+Eigen/Dense
+-
+
 /home/calistabiondic/Documents/Prep Work/NNLS/test/test_cases.cpp
 NNLS_solver.h
 /home/calistabiondic/Documents/Prep Work/NNLS/test/NNLS_solver.h
